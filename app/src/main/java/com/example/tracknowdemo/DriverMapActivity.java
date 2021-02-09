@@ -43,7 +43,7 @@ public class DriverMapActivity extends AppCompatActivity implements OnMapReadyCa
         if (myLocationPermissionsGranted) {
             getDeviceLocation();
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
+                return;
             }
             myMap.setMyLocationEnabled(true);
         }
@@ -66,18 +66,18 @@ public class DriverMapActivity extends AppCompatActivity implements OnMapReadyCa
         Log.d(TAG, "getDeviceLocation:getting the devices current location");
         myFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try {
-            if(myLocationPermissionsGranted){
-                Task location=myFusedLocationProviderClient.getLastLocation();
+            if (myLocationPermissionsGranted) {
+                Task location = myFusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
-                        if(task.isSuccessful()){
-                            Log.d(TAG,"onComplete: found location");
-                            Location currentLocation=(Location)task.getResult();
-                        moveCamera(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude()),cameraZoom);
-                        }else{
-                            Log.d(TAG,"onComplete: current location is null");
-                            Toast.makeText(DriverMapActivity.this,"Unable to get current location",Toast.LENGTH_SHORT).show();
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: found location");
+                            Location currentLocation = (Location) task.getResult();
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), cameraZoom);
+                        } else {
+                            Log.d(TAG, "onComplete: current location is null");
+                            Toast.makeText(DriverMapActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -88,9 +88,10 @@ public class DriverMapActivity extends AppCompatActivity implements OnMapReadyCa
         }
 
     }
-    private void moveCamera(LatLng latlng, float zoom){
-        Log.d(TAG,"moveCamera: moving the camera to: lat:"+latlng.latitude+", lan: "+latlng.longitude);
-        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,zoom));
+
+    private void moveCamera(LatLng latlng, float zoom) {
+        Log.d(TAG, "moveCamera: moving the camera to: lat:" + latlng.latitude + ", lan: " + latlng.longitude);
+        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom));
 
     }
 
