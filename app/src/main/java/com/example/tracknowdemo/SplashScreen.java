@@ -26,14 +26,13 @@ public class SplashScreen extends AppCompatActivity {
         getSupportActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
+        image=findViewById(R.id.imageView);
+        logo=findViewById(R.id.textView);
+        text=findViewById(R.id.textView2);
 
         //Animation
         topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation);
         bottomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation);
-
-        image=findViewById(R.id.imageView);
-        logo=findViewById(R.id.textView);
-        text=findViewById(R.id.textView2);
 
         image.setAnimation(topAnim);
         logo.setAnimation(bottomAnim);
@@ -48,6 +47,7 @@ public class SplashScreen extends AppCompatActivity {
                 pairs[1]=new Pair<View,String>(logo,"logo_text");
                 ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation(SplashScreen.this,pairs);
                 startActivity(intent,options.toBundle());
+                finish();
             }
         },SPLASH_SCREEN);
     }
