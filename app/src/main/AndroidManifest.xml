@@ -14,17 +14,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrackNowDemo">
-        <activity android:name=".SignupActivity"></activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SplashScreen">
+        <activity
+            android:name=".DashboardMain"
+            android:label="@string/title_activity_dashboard_main"
+            android:theme="@style/Theme.TrackNowDemo.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SignupActivity"
+            android:theme="@style/NoActionBarActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/NoActionBarActivity" />
+        <activity
+            android:name=".SplashScreen"
+            android:theme="@style/NoActionBarActivity">
+
+        </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".DriverMapActivity" />
+        <activity
+            android:name=".DriverMapActivity"
+            android:theme="@style/NoActionBarActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -32,6 +46,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

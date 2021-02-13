@@ -23,13 +23,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().hide();
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+//        getSupportActionBar().hide();
         loginToSignupScreenTransition();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                Intent intent=new Intent(LoginActivity.this,DashboardMain.class);
                 startActivity(intent);
                 finish();
             }
@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     void loginToSignupScreenTransition(){
-
         username=findViewById(R.id.username);
         pass=findViewById(R.id.password);
         image=findViewById(R.id.logoImage);
