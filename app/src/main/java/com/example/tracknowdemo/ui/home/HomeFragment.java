@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -36,76 +35,32 @@ public class HomeFragment extends Fragment {
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private TextInputLayout shareId, sharePassword;
-    private Button cancelBtn, shareConfirmBtn;
+    private Button cancelBtn, shareConfirmBtn, shareLocationButton, trackLocationButton;
 
-    CardView trackLocationButton, shareLocationButton,myLocationBtn;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.activity_main, container, false);
-
-        trackLocationButton = root.findViewById(R.id.trackLocationButton);
-        shareLocationButton = root.findViewById(R.id.shareLocationButton);
-        myLocationBtn = root.findViewById(R.id.btnMap);
-
-        myLocationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isServicesOK()) {
+        if (isServicesOK()) {
+            Button btnMap = root.findViewById(R.id.btnMap);
+            btnMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
                     navController.navigate(R.id.my_location_fragment);
                 }
-            }
-        });
-
+            });
+        }
+        shareLocationButton = root.findViewById(R.id.shareLocationButton);
         shareLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createSharePopupDialog();
             }
         });
-
-        trackLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createTrackLocationPopupDialog();
-            }
-        });
         return root;
     }
 
-
-    public void createTrackLocationPopupDialog() {
-        AlertDialog.Builder dialogBuilder;
-        AlertDialog dialog;
-        TextInputLayout trackLocationId, trackLocationPassword;
-        Button trackLocationCancelBtn, trackLocationConfirmBtn;
-        dialogBuilder = new AlertDialog.Builder(getActivity());
-        final View trackLocationConfirmView = getLayoutInflater().inflate(R.layout.track_location_confirm_view, null);
-        trackLocationId = trackLocationConfirmView.findViewById(R.id.trackLocationId);
-        trackLocationPassword = trackLocationConfirmView.findViewById(R.id.trackLocationPassword);
-        trackLocationCancelBtn = trackLocationConfirmView.findViewById(R.id.trackLocationCancelBtn);
-        trackLocationConfirmBtn = trackLocationConfirmView.findViewById(R.id.trackLocationConfirmBtn);
-        dialogBuilder.setView(trackLocationConfirmView);
-        dialog = dialogBuilder.create();
-        dialog.show();
-        trackLocationConfirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isServicesOK()) {
-                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                    navController.navigate(R.id.track_location_fragment);
-                    dialog.dismiss();
-                }
-            }
-        });
-        trackLocationCancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-    }
 
     public void createSharePopupDialog() {
         dialogBuilder = new AlertDialog.Builder(getActivity());

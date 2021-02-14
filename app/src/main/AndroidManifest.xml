@@ -35,7 +35,9 @@
         <activity
             android:name=".DashboardMain"
             android:label="@string/title_activity_dashboard_main"
-            android:theme="@style/Theme.TrackNowDemo.NoActionBar"></activity>
+            android:theme="@style/Theme.TrackNowDemo.NoActionBar">
+
+        </activity>
         <activity
             android:name=".SignupActivity"
             android:theme="@style/NoActionBarActivity" />
