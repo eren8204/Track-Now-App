@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo"
-        android:text="Traveling"
+        android:text="Track Now"
         android:textSize="24sp" />
 
     <TextView
