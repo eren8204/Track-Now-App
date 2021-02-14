@@ -98,6 +98,10 @@ public class DashboardMain extends AppCompatActivity{
                         createSharePopupDialog();
                         drawer.closeDrawer(GravityCompat.START);
                         return true;
+                    case R.id.nav_trackLocation:
+                        createTrackLocationPopupDialog();
+                        drawer.closeDrawer(GravityCompat.START);
+                        return true;
                     default:
                         return false;
                 }
@@ -129,6 +133,37 @@ public class DashboardMain extends AppCompatActivity{
             }
         });
         cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+    public void createTrackLocationPopupDialog() {
+        AlertDialog.Builder dialogBuilder;
+        AlertDialog dialog;
+        TextInputLayout trackLocationId, trackLocationPassword;
+        Button trackLocationCancelBtn, trackLocationConfirmBtn;
+        dialogBuilder = new AlertDialog.Builder(DashboardMain.this);
+        final View trackLocationConfirmView = getLayoutInflater().inflate(R.layout.track_location_confirm_view, null);
+        trackLocationId = trackLocationConfirmView.findViewById(R.id.trackLocationId);
+        trackLocationPassword = trackLocationConfirmView.findViewById(R.id.trackLocationPassword);
+        trackLocationCancelBtn = trackLocationConfirmView.findViewById(R.id.trackLocationCancelBtn);
+        trackLocationConfirmBtn = trackLocationConfirmView.findViewById(R.id.trackLocationConfirmBtn);
+        dialogBuilder.setView(trackLocationConfirmView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+        trackLocationConfirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isServicesOK()) {
+                    NavController navController = Navigation.findNavController(DashboardMain.this, R.id.nav_host_fragment);
+                    navController.navigate(R.id.track_location_fragment);
+                    dialog.dismiss();
+                }
+            }
+        });
+        trackLocationCancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();

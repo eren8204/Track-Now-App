@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_nav_home_fragment_to_my_location_fragment"
             app:destination="@id/my_location_fragment" />
+        <action
+            android:id="@+id/action_nav_home_fragment_to_track_location_fragment"
+            app:destination="@id/track_location_fragment" />
     </fragment>
 
     <fragment
@@ -27,6 +30,9 @@
         <action
             android:id="@+id/action_nav_profile_fragment_to_my_location_fragment"
             app:destination="@id/my_location_fragment" />
+        <action
+            android:id="@+id/action_nav_profile_fragment_to_track_location_fragment"
+            app:destination="@id/track_location_fragment" />
     </fragment>
 
     <fragment
@@ -39,6 +45,24 @@
         <action
             android:id="@+id/action_my_location_fragment_to_nav_home_fragment"
             app:destination="@id/nav_home_fragment" />
+        <action
+            android:id="@+id/action_my_location_fragment_to_track_location_fragment"
+            app:destination="@id/track_location_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/track_location_fragment"
+        android:name="com.example.tracknowdemo.ui.map.TrackLocationFragment"
+        android:label="Tracking Location" >
+        <action
+            android:id="@+id/action_track_location_fragment_to_nav_home_fragment"
+            app:destination="@id/nav_home_fragment" />
+        <action
+            android:id="@+id/action_track_location_fragment_to_nav_profile_fragment"
+            app:destination="@id/nav_profile_fragment" />
+        <action
+            android:id="@+id/action_track_location_fragment_to_my_location_fragment"
+            app:destination="@id/my_location_fragment" />
     </fragment>
 
 </navigation>

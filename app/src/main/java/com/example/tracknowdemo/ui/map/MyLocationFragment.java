@@ -62,9 +62,6 @@ public class MyLocationFragment extends Fragment {
                 }
                 myMap.setMyLocationEnabled(true);
             }
-//            LatLng sydney = new LatLng(-34, 151);
-//            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         }
     };
 
@@ -78,11 +75,11 @@ public class MyLocationFragment extends Fragment {
         return root;
     }
 
-    private void initMap() {
-        Log.d(TAG, "initMap:initializing map");
+//    private void initMap() {
+//        Log.d(TAG, "initMap:initializing map");
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 //        mapFragment.getMapAsync((OnMapReadyCallback) getActivity());
-    }
+//    }
 
     private void getDeviceLocation() {
         Log.d(TAG, "getDeviceLocation:getting the devices current location");
@@ -123,7 +120,6 @@ public class MyLocationFragment extends Fragment {
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 myLocationPermissionsGranted = true;
-                initMap();
             } else {
                 ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
             }
@@ -145,7 +141,8 @@ public class MyLocationFragment extends Fragment {
                         }
                     }
                     myLocationPermissionsGranted = true;
-                    initMap();
+//                    initMap();
+                    Log.d(TAG, "initMap:initializing map");
                 }
             }
         }
