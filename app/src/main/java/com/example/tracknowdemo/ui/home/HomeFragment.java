@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.tracknowdemo.DashboardMain;
 import com.example.tracknowdemo.DriverMapActivity;
@@ -27,7 +29,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class HomeFragment extends Fragment {
-    private HomeViewModel homeViewModel;
+
     private static final String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private AlertDialog.Builder dialogBuilder;
@@ -37,11 +39,17 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         View root = inflater.inflate(R.layout.activity_main, container, false);
         if (isServicesOK()) {
-            init(root);
+            Button btnMap = root.findViewById(R.id.btnMap);
+            btnMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                    navController.navigate(R.id.my_location_fragment);
+                }
+            });
         }
         shareLocationButton = root.findViewById(R.id.shareLocationButton);
         shareLocationButton.setOnClickListener(new View.OnClickListener() {
@@ -68,8 +76,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isServicesOK()) {
-                    Intent intent = new Intent(getActivity(), DriverMapActivity.class);
-                    startActivity(intent);
+                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                    navController.navigate(R.id.my_location_fragment);
                     dialog.dismiss();
                 }
             }
@@ -80,20 +88,8 @@ public class HomeFragment extends Fragment {
                 dialog.dismiss();
             }
         });
-
     }
 
-    private void init(View root) {
-        Button btnMap = root.findViewById(R.id.btnMap);
-        btnMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), DriverMapActivity.class);
-                startActivity(intent);
-            }
-        });
-
-    }
 
     public boolean isServicesOK() {
         Log.d(TAG, "isServiceOK:checking google services version");
