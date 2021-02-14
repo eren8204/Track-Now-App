@@ -36,11 +36,7 @@
             android:name=".DashboardMain"
             android:label="@string/title_activity_dashboard_main"
             android:theme="@style/Theme.TrackNowDemo.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SignupActivity"
@@ -50,7 +46,13 @@
             android:theme="@style/NoActionBarActivity" />
         <activity
             android:name=".SplashScreen"
-            android:theme="@style/NoActionBarActivity"></activity>
+            android:theme="@style/NoActionBarActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".MainActivity" />
         <activity
             android:name=".DriverMapActivity"
