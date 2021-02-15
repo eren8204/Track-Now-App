@@ -39,7 +39,7 @@
                 android:transitionName="welcomeTextTran" />
 
             <TextView
-                android:id="@+id/logo_desc"
+                android:id="@+id/logoDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/antic"
@@ -49,15 +49,15 @@
                 android:transitionName="logo_desc"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/username"
+                android:id="@+id/email"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:transitionName="username_tran"
                 android:layout_height="wrap_content"
-                android:hint="Username">
+                android:hint="Email">
 
                 <com.google.android.material.textfield.TextInputEditText
-
+                    android:id="@+id/emailTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -75,7 +75,7 @@
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-
+                    android:id="@+id/passwordTextField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -98,12 +98,15 @@
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:background="#000"
                 android:text="GO"
                 android:textColor="#fff"
-                android:transitionName="button_tran" />
+                android:transitionName="button_tran"
+                app:cornerRadius="8dp" />
 
             <Button
                 android:id="@+id/signupButton"

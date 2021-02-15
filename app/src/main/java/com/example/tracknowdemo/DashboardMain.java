@@ -20,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -43,17 +44,19 @@ public class DashboardMain extends AppCompatActivity{
     ActionBarDrawerToggle toggle;
     private static final String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
+    private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_main);
+        auth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Message Section will be implemented.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -184,7 +187,6 @@ public class DashboardMain extends AppCompatActivity{
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(DashboardMain.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
         } else {
-
             Toast.makeText(DashboardMain.this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
@@ -203,6 +205,7 @@ public class DashboardMain extends AppCompatActivity{
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                auth.signOut();
                 Intent intent = new Intent(DashboardMain.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
@@ -223,6 +226,9 @@ public class DashboardMain extends AppCompatActivity{
         switch (id) {
             case R.id.action_settings:
                 Toast.makeText(DashboardMain.this, "App Settings is clicked.", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_logout:
+                createLogoutPopupDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
