@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.example.tracknowdemo.R;
 import com.example.tracknowdemo.ui.slideshow.SlideshowViewModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class HomeFragment extends Fragment {
@@ -35,9 +37,7 @@ public class HomeFragment extends Fragment {
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-    private TextInputLayout shareId, sharePassword;
     private Button cancelBtn, shareConfirmBtn;
-
     CardView trackLocationButton, shareLocationButton,myLocationBtn;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -93,6 +93,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isServicesOK()) {
+
                     NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
                     navController.navigate(R.id.track_location_fragment);
                     dialog.dismiss();
@@ -110,8 +111,8 @@ public class HomeFragment extends Fragment {
     public void createSharePopupDialog() {
         dialogBuilder = new AlertDialog.Builder(getActivity());
         final View shareConfirmPopupView = getLayoutInflater().inflate(R.layout.share_confirm_popup_view, null);
-        shareId = shareConfirmPopupView.findViewById(R.id.shareId);
-        sharePassword = shareConfirmPopupView.findViewById(R.id.sharePassword);
+        TextInputLayout shareIdTextField=shareConfirmPopupView.findViewById(R.id.shareId);
+        TextInputLayout sharePassTextField=shareConfirmPopupView.findViewById(R.id.sharePassword);
         cancelBtn = shareConfirmPopupView.findViewById(R.id.cancelBtn);
         shareConfirmBtn = shareConfirmPopupView.findViewById(R.id.shareConfirmBtn);
         dialogBuilder.setView(shareConfirmPopupView);
@@ -120,10 +121,21 @@ public class HomeFragment extends Fragment {
         shareConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String myShareId=shareIdTextField.getEditText().getText().toString();
+                String mySharePass=sharePassTextField.getEditText().getText().toString();
+
                 if (isServicesOK()) {
-                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                    navController.navigate(R.id.my_location_fragment);
-                    dialog.dismiss();
+                    if(myShareId.matches("")||mySharePass.matches("")){
+                        Toast.makeText(getActivity(), "You have to put a secured unique share id and password.", Toast.LENGTH_LONG).show();
+                    }else{
+                        Bundle bundle = new Bundle();
+                        bundle.putString("shareId", myShareId);
+                        bundle.putString("sharePass", mySharePass);
+                        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                        navController.navigate(R.id.share_location_fragment,bundle);
+                        dialog.dismiss();
+                    }
+
                 }
             }
         });
@@ -150,7 +162,6 @@ public class HomeFragment extends Fragment {
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), available, ERROR_DIALOG_REQUEST);
             dialog.show();
         } else {
-
             Toast.makeText(getActivity(), "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;

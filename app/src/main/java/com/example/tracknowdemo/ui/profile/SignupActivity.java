@@ -1,4 +1,4 @@
-package com.example.tracknowdemo;
+package com.example.tracknowdemo.ui.profile;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,14 +8,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tracknowdemo.databinding.ActivityDriverMapBinding;
 import com.example.tracknowdemo.databinding.ActivitySignupBinding;
 import com.example.tracknowdemo.models.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,9 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.ktx.Firebase;
 
 public class SignupActivity extends AppCompatActivity {
     private ActivitySignupBinding binding;
@@ -42,7 +38,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         auth = FirebaseAuth.getInstance();
-        progressDialog=new ProgressDialog(SignupActivity.this);
+        progressDialog = new ProgressDialog(SignupActivity.this);
         progressDialog.setTitle("Creating Account...");
         progressDialog.setMessage("We're creating your account.");
         binding.loginButton.setOnClickListener(new View.OnClickListener() {

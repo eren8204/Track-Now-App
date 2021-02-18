@@ -2,14 +2,23 @@ package com.example.tracknowdemo.ui.map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.tracknowdemo.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,9 +26,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 public class TrackLocationFragment extends Fragment {
+    private static final String TAG = "DriverMapActivity";
+    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float cameraZoom = 15f;
+    private Boolean myLocationPermissionsGranted = false;
+    private GoogleMap myMap;
+    private FusedLocationProviderClient myFusedLocationProviderClient;
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -36,7 +54,15 @@ public class TrackLocationFragment extends Fragment {
             LatLng pinLocation = new LatLng(24.7576521, 90.3907846);
             CameraUpdate pinLocationCamera = CameraUpdateFactory.newLatLngZoom(pinLocation, cameraZoom);
             googleMap.animateCamera(pinLocationCamera);
-            googleMap.addMarker(new MarkerOptions().position(pinLocation).title("Marker in pinLocation"));
+            googleMap.addMarker(new MarkerOptions().position(pinLocation).title("Marker in pin Location"));
+            myMap = googleMap;
+            if (myLocationPermissionsGranted) {
+                getDeviceLocation();
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                myMap.setMyLocationEnabled(true);
+            }
         }
     };
 
@@ -45,7 +71,9 @@ public class TrackLocationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_track_location, container, false);
+        View root = inflater.inflate(R.layout.fragment_track_location, container, false);
+        getLocationPermission();
+        return root;
     }
 
     @Override
@@ -55,6 +83,70 @@ public class TrackLocationFragment extends Fragment {
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        myLocationPermissionsGranted = false;
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE: {
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < grantResults.length; i++) {
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                            myLocationPermissionsGranted = false;
+                            return;
+                        }
+                    }
+                    myLocationPermissionsGranted = true;
+//                    initMap();
+                    Log.d(TAG, "initMap:initializing map");
+                }
+            }
+        }
+    }
+    private void moveCamera(LatLng latlng, float zoom) {
+        Log.d(TAG, "moveCamera: moving the camera to: lat:" + latlng.latitude + ", lan: " + latlng.longitude);
+        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom));
+
+    }
+
+    private void getLocationPermission() {
+        Log.d(TAG, "getLocationPermission: getting location permissions");
+        String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
+        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                myLocationPermissionsGranted = true;
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
+            }
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    private void getDeviceLocation() {
+        Log.d(TAG, "getDeviceLocation:getting the devices current location");
+        myFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        try {
+            if (myLocationPermissionsGranted) {
+                Task location = myFusedLocationProviderClient.getLastLocation();
+                location.addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: found location");
+                            Location currentLocation = (Location) task.getResult();
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), cameraZoom);
+                        } else {
+                            Log.d(TAG, "onComplete: current location is null");
+                            Toast.makeText(getActivity(), "Unable to get current location", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+
+        } catch (SecurityException e) {
+            Log.e(TAG, "getDeviceLocation: SecurityException " + e.getMessage());
         }
     }
 }

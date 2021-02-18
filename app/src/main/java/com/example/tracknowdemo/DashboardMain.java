@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.tracknowdemo.ui.profile.LoginActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -19,9 +20,9 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -117,6 +118,7 @@ public class DashboardMain extends AppCompatActivity{
             }
         });
     }
+    String myShareId,mySharePass;
     public void createSharePopupDialog() {
         AlertDialog.Builder dialogBuilder;
         AlertDialog dialog;
@@ -124,8 +126,14 @@ public class DashboardMain extends AppCompatActivity{
         Button cancelBtn, shareConfirmBtn;
         dialogBuilder = new AlertDialog.Builder(DashboardMain.this);
         final View shareConfirmPopupView = getLayoutInflater().inflate(R.layout.share_confirm_popup_view, null);
-        shareId = shareConfirmPopupView.findViewById(R.id.shareId);
-        sharePassword = shareConfirmPopupView.findViewById(R.id.sharePassword);
+//        shareId = shareConfirmPopupView.findViewById(R.id.shareId);
+//        sharePassword = shareConfirmPopupView.findViewById(R.id.sharePassword);
+//        TextInputLayout textInputLayout = shareConfirmPopupView.findViewById(R.id.my_share_id);
+//        String myShareId = textInputLayout.getEditText().getText().toString();
+        TextInputEditText shareIdTextField=shareConfirmPopupView.findViewById(R.id.myShareIdTextField);
+//        TextInputLayout sharePassTextField=shareConfirmPopupView.findViewById(R.id.sharePassword);
+        myShareId=shareIdTextField.getText().toString();
+//        mySharePass=sharePassTextField.getEditText().getText().toString();
         cancelBtn = shareConfirmPopupView.findViewById(R.id.cancelBtn);
         shareConfirmBtn = shareConfirmPopupView.findViewById(R.id.shareConfirmBtn);
         dialogBuilder.setView(shareConfirmPopupView);
@@ -134,10 +142,11 @@ public class DashboardMain extends AppCompatActivity{
         shareConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(DashboardMain.this, "Dashboard Main. share id:"+myShareId, Toast.LENGTH_LONG).show();
                 if (isServicesOK()) {
-                    NavController navController = Navigation.findNavController(DashboardMain.this, R.id.nav_host_fragment);
-                    navController.navigate(R.id.my_location_fragment);
-                    dialog.dismiss();
+//                    NavController navController = Navigation.findNavController(DashboardMain.this, R.id.nav_host_fragment);
+//                    navController.navigate(R.id.share_location_fragment);
+//                    dialog.dismiss();
                 }
             }
         });

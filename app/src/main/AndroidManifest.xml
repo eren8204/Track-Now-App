@@ -35,12 +35,12 @@
         <activity
             android:name=".DashboardMain"
             android:label="@string/title_activity_dashboard_main"
-            android:theme="@style/Theme.TrackNowDemo.NoActionBar"></activity>
+            android:theme="@style/Theme.TrackNowDemo.NoActionBar" />
         <activity
-            android:name=".SignupActivity"
+            android:name=".ui.profile.SignupActivity"
             android:theme="@style/NoActionBarActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.profile.LoginActivity"
             android:theme="@style/NoActionBarActivity" />
         <activity
             android:name=".SplashScreen"

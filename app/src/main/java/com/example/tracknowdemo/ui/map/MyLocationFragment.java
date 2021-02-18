@@ -105,7 +105,6 @@ public class MyLocationFragment extends Fragment {
         } catch (SecurityException e) {
             Log.e(TAG, "getDeviceLocation: SecurityException " + e.getMessage());
         }
-
     }
 
     private void moveCamera(LatLng latlng, float zoom) {
