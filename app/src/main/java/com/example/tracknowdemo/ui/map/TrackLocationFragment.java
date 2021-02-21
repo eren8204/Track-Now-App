@@ -7,7 +7,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +28,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -50,8 +56,10 @@ public class TrackLocationFragment extends Fragment {
     String trackLocationId, trackLocationPassword;
     Double trackLocationCurrentLatitude, trackLocationCurrentLongitude;
     DatabaseReference databaseReference;
-    GoogleMap myGoogleMap;
+    Marker marker;
+    Map<String, Marker> markers = new HashMap();
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    MarkerOptions markerOptions;
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -65,12 +73,22 @@ public class TrackLocationFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            myGoogleMap = googleMap;
             LatLng pinLocation = new LatLng(trackLocationCurrentLatitude, trackLocationCurrentLongitude);
             CameraUpdate pinLocationCamera = CameraUpdateFactory.newLatLngZoom(pinLocation, cameraZoom);
             googleMap.animateCamera(pinLocationCamera);
-            googleMap.addMarker(new MarkerOptions().position(pinLocation).title("Tracking Id:" + trackLocationId));
+//            googleMap.addMarker(new MarkerOptions().position(pinLocation).title("Tracking Id:" + trackLocationId));
             myMap = googleMap;
+            if (marker != null) {
+                marker.remove();
+            }
+            markerOptions = new MarkerOptions();
+            markerOptions.draggable(true);
+            markerOptions.title("Tracking Id:" + trackLocationId);
+            markerOptions.icon(bitmapDescriptorFromVector(getActivity().getApplicationContext(),R.drawable.directions_bike));
+            markerOptions.snippet("I am here!");
+            markerOptions.position(pinLocation);
+            marker = myMap.addMarker(markerOptions);
+
             if (myLocationPermissionsGranted) {
                 getDeviceLocation();
                 if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -80,7 +98,7 @@ public class TrackLocationFragment extends Fragment {
             }
         }
     };
-    Map<String, Marker> markers = new HashMap();
+
 
     @Nullable
     @Override
@@ -100,13 +118,15 @@ public class TrackLocationFragment extends Fragment {
                 MyLocation myLocation = dataSnapshot.getValue(MyLocation.class);
                 LatLng pinLocation = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
                 CameraUpdate pinLocationCamera = CameraUpdateFactory.newLatLngZoom(pinLocation, cameraZoom);
-                myGoogleMap.animateCamera(pinLocationCamera);
+//                myMap.animateCamera(pinLocationCamera);
+                myMap.moveCamera(pinLocationCamera);
 
-//                markers.get(dataSnapshot.getKey()).remove();
-                // you can also modify the marker instead of removing it and then add it again
-
-                myGoogleMap.addMarker(new MarkerOptions().position(pinLocation).title("Tracking Id:" + trackLocationId));
-//                    Log.d("TrackLocationWorking", "My Lat,longitude is " + myLocation.getLatitude() + " " + myLocation.getLongitude());
+                if (marker != null) {
+                    marker.remove();
+                }
+                markerOptions.position(pinLocation);
+                marker = myMap.addMarker(markerOptions);
+//                myMap.addMarker(new MarkerOptions().position(pinLocation).title("Tracking Id:" + trackLocationId));
             }
 
             @Override
@@ -146,6 +166,14 @@ public class TrackLocationFragment extends Fragment {
                 }
             }
         }
+    }
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context,int vectorResId){
+        Drawable vectorDrawable=ContextCompat.getDrawable(context,vectorResId);
+        vectorDrawable.setBounds(0,0,vectorDrawable.getIntrinsicWidth(),vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap=Bitmap.createBitmap(vectorDrawable.getMinimumWidth(),vectorDrawable.getIntrinsicHeight(),Bitmap.Config.ARGB_8888);
+        Canvas canvas=new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     private void moveCamera(LatLng latlng, float zoom) {
