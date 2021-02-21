@@ -33,6 +33,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -80,8 +81,8 @@ public class ShareLocationFragment extends Fragment {
         shareId = getArguments().getString("shareId");
         sharePass = getArguments().getString("sharePass");
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(4000);
-        locationRequest.setFastestInterval(2000);
+        locationRequest.setInterval(1000);//1s
+        locationRequest.setFastestInterval(500);//500ms
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 //        Toast.makeText(getActivity(), "share id:"+shareId+" & pass:"+sharePass, Toast.LENGTH_LONG).show();
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -130,20 +131,35 @@ public class ShareLocationFragment extends Fragment {
                 return;
             }
             for (Location location : locationResult.getLocations()) {
-                Log.d("my_location", "onLocationResult: " + location.toString());
+//                Log.d("my_location", "onLocationResult: " + location.toString());
                 moveCamera(new LatLng(location.getLatitude(), location.getLongitude()), cameraZoom);
-                saveLocation(new MyLocation(Double.toString(location.getLatitude()), Double.toString(location.getLongitude()), sharePass));
+                CameraUpdate pinLocationCamera = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), cameraZoom);
+                myMap.animateCamera(pinLocationCamera);
+                saveLocation(new MyLocation(location.getLatitude(),location.getLongitude(), sharePass));
             }
         }
     };
 
     private void startLocationUpdate() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Toast.makeText(getActivity(), "onPause is called.", Toast.LENGTH_SHORT).show();
+        startLocationUpdate();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Toast.makeText(getActivity(), "Getting back to app.", Toast.LENGTH_SHORT).show();
+        startLocationUpdate();
     }
 
     @Override
@@ -168,7 +184,6 @@ public class ShareLocationFragment extends Fragment {
         if (requestCode == LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //permission granted
-//                getMyLastLocation();
                 checkSettingsAndStartLocationUpdate();
             } else {
                 //permission not granted
@@ -187,13 +202,8 @@ public class ShareLocationFragment extends Fragment {
     }
 
     private void moveCamera(LatLng latlng, float zoom) {
-        Log.d(TAG, "moveCamera: moving the camera to: lat:" + latlng.latitude + ", lan: " + latlng.longitude);
+//        Log.d(TAG, "moveCamera: moving the camera to: lat:" + latlng.latitude + ", lan: " + latlng.longitude);
         myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom));
-
-    }
-
-    private void getLocationPermission() {
-
     }
 
 

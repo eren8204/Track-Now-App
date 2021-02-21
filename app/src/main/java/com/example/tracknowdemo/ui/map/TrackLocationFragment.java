@@ -25,9 +25,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TrackLocationFragment extends Fragment {
     private static final String TAG = "DriverMapActivity";
@@ -38,6 +47,11 @@ public class TrackLocationFragment extends Fragment {
     private Boolean myLocationPermissionsGranted = false;
     private GoogleMap myMap;
     private FusedLocationProviderClient myFusedLocationProviderClient;
+    String trackLocationId, trackLocationPassword;
+    Double trackLocationCurrentLatitude, trackLocationCurrentLongitude;
+    DatabaseReference databaseReference;
+    GoogleMap myGoogleMap;
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -51,10 +65,11 @@ public class TrackLocationFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng pinLocation = new LatLng(24.7576521, 90.3907846);
+            myGoogleMap = googleMap;
+            LatLng pinLocation = new LatLng(trackLocationCurrentLatitude, trackLocationCurrentLongitude);
             CameraUpdate pinLocationCamera = CameraUpdateFactory.newLatLngZoom(pinLocation, cameraZoom);
             googleMap.animateCamera(pinLocationCamera);
-            googleMap.addMarker(new MarkerOptions().position(pinLocation).title("Marker in pin Location"));
+            googleMap.addMarker(new MarkerOptions().position(pinLocation).title("Tracking Id:" + trackLocationId));
             myMap = googleMap;
             if (myLocationPermissionsGranted) {
                 getDeviceLocation();
@@ -65,6 +80,7 @@ public class TrackLocationFragment extends Fragment {
             }
         }
     };
+    Map<String, Marker> markers = new HashMap();
 
     @Nullable
     @Override
@@ -72,6 +88,32 @@ public class TrackLocationFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_track_location, container, false);
+        trackLocationId = getArguments().getString("trackLocationId");
+        trackLocationPassword = getArguments().getString("trackLocationPassword");
+        trackLocationCurrentLatitude = getArguments().getDouble("trackLocationCurrentLatitude");
+        trackLocationCurrentLongitude = getArguments().getDouble("trackLocationCurrentLongitude");
+        databaseReference = FirebaseDatabase.getInstance().getReference("locations/" + trackLocationId);
+        // Attach a listener to read the data at our posts reference
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MyLocation myLocation = dataSnapshot.getValue(MyLocation.class);
+                LatLng pinLocation = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+                CameraUpdate pinLocationCamera = CameraUpdateFactory.newLatLngZoom(pinLocation, cameraZoom);
+                myGoogleMap.animateCamera(pinLocationCamera);
+
+//                markers.get(dataSnapshot.getKey()).remove();
+                // you can also modify the marker instead of removing it and then add it again
+
+                myGoogleMap.addMarker(new MarkerOptions().position(pinLocation).title("Tracking Id:" + trackLocationId));
+//                    Log.d("TrackLocationWorking", "My Lat,longitude is " + myLocation.getLatitude() + " " + myLocation.getLongitude());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("TrackLocationWorking", "The read failed: " + databaseError.getCode());
+            }
+        });
         getLocationPermission();
         return root;
     }
@@ -85,6 +127,7 @@ public class TrackLocationFragment extends Fragment {
             mapFragment.getMapAsync(callback);
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         myLocationPermissionsGranted = false;
@@ -104,6 +147,7 @@ public class TrackLocationFragment extends Fragment {
             }
         }
     }
+
     private void moveCamera(LatLng latlng, float zoom) {
         Log.d(TAG, "moveCamera: moving the camera to: lat:" + latlng.latitude + ", lan: " + latlng.longitude);
         myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, zoom));
