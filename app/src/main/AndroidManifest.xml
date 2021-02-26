@@ -38,13 +38,13 @@
             android:theme="@style/Theme.TrackNowDemo.NoActionBar" />
         <activity
             android:name=".ui.profile.SignupActivity"
-            android:theme="@style/NoActionBarActivity" />
+            android:theme="@style/Theme.TrackNowDemo.NoActionBar" />
         <activity
             android:name=".ui.profile.LoginActivity"
-            android:theme="@style/NoActionBarActivity" />
+            android:theme="@style/Theme.TrackNowDemo.NoActionBar" />
         <activity
             android:name=".SplashScreen"
-            android:theme="@style/NoActionBarActivity">
+            android:theme="@style/Theme.TrackNowDemo.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -54,7 +54,7 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".DriverMapActivity"
-            android:theme="@style/NoActionBarActivity" />
+            android:theme="@style/Theme.TrackNowDemo.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.gms.version"

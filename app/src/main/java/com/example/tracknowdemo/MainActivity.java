@@ -41,17 +41,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        getSupportActionBar().hide();
-//        toolbar = findViewById(R.id.my_toolbar);
-//        setSupportActionBar(toolbar);
-
-//        getSupportActionBar();
-//        drawerLayout=findViewById(R.id.drawer_layout);
-//        navigationView=findViewById(R.id.nav_view);
-//        ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this, drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
-//        drawerLayout.addDrawerListener(toggle);
-//        toggle.syncState();
-//        navigationView.setNavigationItemSelectedListener(this);
         trackLocationButton=findViewById(R.id.trackLocationButton);
         trackLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
