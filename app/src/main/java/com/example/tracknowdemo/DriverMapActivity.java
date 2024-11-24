@@ -112,6 +112,7 @@ public class DriverMapActivity extends AppCompatActivity implements OnMapReadyCa
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         myLocationPermissionsGranted = false;
         switch (requestCode) {
             case LOCATION_PERMISSION_REQUEST_CODE: {

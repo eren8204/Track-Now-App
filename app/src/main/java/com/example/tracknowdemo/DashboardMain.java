@@ -1,5 +1,6 @@
 package com.example.tracknowdemo;
 
+import com.example.tracknowdemo.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -97,36 +98,37 @@ public class DashboardMain extends AppCompatActivity{
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-                switch (id) {
-                    case R.id.nav_logout:
-                        createLogoutPopupDialog();
-                        drawer.closeDrawer(GravityCompat.START);
-                        return true;
-                    case R.id.nav_profile:
-                        navController.navigate(R.id.nav_profile_fragment);
-                        drawer.closeDrawer(GravityCompat.START);
-                        return true;
-                    case R.id.nav_myLocation:
-                        navController.navigate(R.id.my_location_fragment);
-                        drawer.closeDrawer(GravityCompat.START);
-                        return true;
-                    case R.id.nav_home:
-                        navController.navigate(R.id.nav_home_fragment);
-                        drawer.closeDrawer(GravityCompat.START);
-                        return true;
-                    case R.id.nav_shareLocation:
-                        createSharePopupDialog();
-                        drawer.closeDrawer(GravityCompat.START);
-                        return true;
-                    case R.id.nav_trackLocation:
-                        createTrackLocationPopupDialog();
-                        drawer.closeDrawer(GravityCompat.START);
-                        return true;
-                    default:
-                        return false;
+
+                if (id == R.id.nav_logout) {
+                    createLogoutPopupDialog();
+                    drawer.closeDrawer(GravityCompat.START);
+                    return true;
+                } else if (id == R.id.nav_profile) {
+                    navController.navigate(R.id.nav_profile_fragment);
+                    drawer.closeDrawer(GravityCompat.START);
+                    return true;
+                } else if (id == R.id.nav_myLocation) {
+                    navController.navigate(R.id.my_location_fragment);
+                    drawer.closeDrawer(GravityCompat.START);
+                    return true;
+                } else if (id == R.id.nav_home) {
+                    navController.navigate(R.id.nav_home_fragment);
+                    drawer.closeDrawer(GravityCompat.START);
+                    return true;
+                } else if (id == R.id.nav_shareLocation) {
+                    createSharePopupDialog();
+                    drawer.closeDrawer(GravityCompat.START);
+                    return true;
+                } else if (id == R.id.nav_trackLocation) {
+                    createTrackLocationPopupDialog();
+                    drawer.closeDrawer(GravityCompat.START);
+                    return true;
+                } else {
+                    return false;
                 }
             }
         });
+
     }
     private AlertDialog dialog;
     private AlertDialog.Builder dialogBuilder;
@@ -328,16 +330,16 @@ public class DashboardMain extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
-            case R.id.action_settings:
-                Toast.makeText(DashboardMain.this, "App Settings is clicked.", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.action_logout:
-                createLogoutPopupDialog();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (id == R.id.action_settings) {
+            Toast.makeText(DashboardMain.this, "App Settings is clicked.", Toast.LENGTH_LONG).show();
+            return true;
+        } else if (id == R.id.action_logout) {
+            createLogoutPopupDialog();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
+
     }
 
     @Override

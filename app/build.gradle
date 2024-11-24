@@ -4,12 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    namespace "com.example.tracknowdemo"
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "com.example.tracknowdemo"
-        minSdkVersion 22
+        minSdkVersion 23
+        //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -31,28 +32,26 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:26.3.0')
+    implementation platform('com.google.firebase:firebase-bom:33.6.0') // Use the latest BOM
     implementation 'com.google.firebase:firebase-database-ktx'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'com.google.android.gms:play-services-auth:19.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.mediarouter:mediarouter:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'com.google.android.gms:play-services-auth:21.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'androidx.mediarouter:mediarouter:1.7.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.navigation:navigation-fragment:2.3.1'
-    implementation 'androidx.navigation:navigation-ui:2.3.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.firebase:firebase-database:19.2.1'
-    implementation 'com.google.firebase:firebase-auth'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.8.4'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.8.4'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7'
+    implementation 'com.google.android.gms:play-services-maps:19.0.0'
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.android.gms:play-services-gcm:17.0.0'
-    implementation 'com.google.android.gms:play-services-location:17.1.0'
-    implementation 'com.google.android.gms:play-services-wallet:18.1.1'
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation 'com.google.android.gms:play-services-wallet:19.4.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 }
