@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">Track Now</string>
-    <string name="google_maps_API_key">AIzaSyBJRuki6RcEYXA0_GgF8cJXpBp5hUP3UXs</string>
+    <string name="app_name">TrackerAPP</string>
+    <string name="facebook_app_id">546136244980372</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">6e90d3b339a5a728a93760983b9c82f8</string>
+    <string name="google_maps_API_key">AIzaSyBNhabK5xegftRLrKdhE_7tK4gVLLO4u3Q</string>
     <string name="title_activity_dashboard_main">Main Dashboard</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>

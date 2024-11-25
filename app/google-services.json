@@ -1,33 +1,42 @@
 {
   "project_info": {
-    "project_number": "218322397242",
-    "project_id": "track-now-demo",
-    "storage_bucket": "track-now-demo.appspot.com"
+    "project_number": "642487083459",
+    "firebase_url": "https://trackerapp-8dcb5-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "trackerapp-8dcb5",
+    "storage_bucket": "trackerapp-8dcb5.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:218322397242:android:184d962d1a29ae51412d03",
+        "mobilesdk_app_id": "1:642487083459:android:65809d47a0ed86fcc75d76",
         "android_client_info": {
           "package_name": "com.example.tracknowdemo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "218322397242-mvvf1hqpro1n4qvfrbuff8efrt5igdr7.apps.googleusercontent.com",
+          "client_id": "642487083459-2jcrrhmakqvpo0m25pdhq230dpgmdcq5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tracknowdemo",
+            "certificate_hash": "b43589e803358e85aa29206e291c7f63f15d57eb"
+          }
+        },
+        {
+          "client_id": "642487083459-scpa23ja18vo7rj198f93fv20urb10or.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDtWjuygYHnCIvlxYjqnm3ANidhgCKmBqg"
+          "current_key": "AIzaSyAMiZzG5-bs6vD70KFeDLl4RNeIaXJv5_Y"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "218322397242-mvvf1hqpro1n4qvfrbuff8efrt5igdr7.apps.googleusercontent.com",
+              "client_id": "642487083459-scpa23ja18vo7rj198f93fv20urb10or.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -25,7 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bangers"
-        android:text="Track Now Demo"
+        android:text="Tracker APP"
         android:textAlignment="center"
         android:transitionName="logo_text"
         android:textSize="70sp"

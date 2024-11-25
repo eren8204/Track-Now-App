@@ -7,6 +7,7 @@ import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +48,7 @@ public class SignupActivity extends AppCompatActivity {
                 signupToLoginScreenTransition();
             }
         });
+
         binding.signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +89,6 @@ public class SignupActivity extends AppCompatActivity {
                                                   }
                             );
                 }
-
             }
         });
     }
@@ -123,6 +124,4 @@ public class SignupActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
-
-
 }
